@@ -25,7 +25,9 @@ env:
   FEEDS_CONF: feeds.conf.default
   CONFIG_FILE: immortalwrt.config
   DIY_P1_SH: diy-part1.sh
-  DIY_P2_SH: diy-part2.sh
+  DIY_P2_UPDATE_FEEDS_SH: diy-part2-update-feeds.sh
+  DIY_P3_INSTALL_SH: diy-part3-install.sh
+  DIY_P4_SH: diy-part4.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
   UPLOAD_COWTRANSFER: false
@@ -93,18 +95,25 @@ jobs:
         $GITHUB_WORKSPACE/$DIY_P1_SH
 
     - name: Update feeds
-      run: cd openwrt && ./scripts/feeds update -a
+      run: |
+        chmod +x $DIY_P2_UPDATE_FEEDS_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P2_UPDATE_FEEDS_SH
 
     - name: Install feeds
-      run: cd openwrt && ./scripts/feeds install -a
+      run: |
+        chmod +x $DIY_P3_INSTALL_SH
+        cd openwrt
+        $GITHUB_WORKSPACE/$DIY_P3_INSTALL_SH
+
 
     - name: Load custom configuration
       run: |
         [ -e files ] && mv files openwrt/files
         [ -e $CONFIG_FILE ] && mv $CONFIG_FILE openwrt/.config
-        chmod +x $DIY_P2_SH
+        chmod +x $DIY_P4_SH
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P2_SH
+        $GITHUB_WORKSPACE/$DIY_P4_SH
 
     - name: Debugging with tmate
       uses: mxschmitt/action-tmate@v3.11
