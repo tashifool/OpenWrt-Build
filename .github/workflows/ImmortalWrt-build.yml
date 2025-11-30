@@ -26,7 +26,7 @@ env:
   CONFIG_FILE: immortalwrt.config
   DIY_P1_SH: diy-part1.sh
   DIY_P2_UPDATE_FEEDS_SH: diy-part2-update-feeds.sh
-  DIY_P3_INSTALL_SH: diy-part3-install.sh
+  DIY_P3_INSTALL_FEEDS_SH: diy-part3-install-feeds.sh
   DIY_P4_SH: diy-part4.sh
   UPLOAD_BIN_DIR: false
   UPLOAD_FIRMWARE: true
@@ -102,9 +102,9 @@ jobs:
 
     - name: Install feeds
       run: |
-        chmod +x $DIY_P3_INSTALL_SH
+        chmod +x $DIY_P3_INSTALL_FEEDS_SH
         cd openwrt
-        $GITHUB_WORKSPACE/$DIY_P3_INSTALL_SH
+        $GITHUB_WORKSPACE/$DIY_P3_INSTALL_FEEDS_SH
 
 
     - name: Load custom configuration
